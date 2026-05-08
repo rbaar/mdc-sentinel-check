@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Security Posture Check</title>
+    <title>Security Posture &amp; Operations Check</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -14,15 +14,15 @@
         <div class="hero-layout">
             <div class="hero-text">
                 <div class="hero-sun">🛡️</div>
-                <h1>Cloud Security<br><span class="accent">Posture Check</span></h1>
-                <p class="tagline">Ken je security posture.</p>
+                <h1>Security Posture &amp; <span class="accent">Operations Check</span></h1>
+                <p class="tagline">Ken je instellingen.</p>
                 <p class="hero-desc">
                     Weet jij zeker dat je cloudomgeving en on-premise servers de bescherming 
                     hebben die je verwacht? Loop stap voor stap door alle kritische configuraties 
                     en valideer je security posture.
                 </p>
                 <div class="hero-badges">
-                    <div class="badge"><span class="badge-icon">🛡️</span> Cloud Security</div>
+                    <div class="badge"><span class="badge-icon">🛡️</span> Security Posture</div>
                     <div class="badge"><span class="badge-icon">🔒</span> Server Security</div>
                 </div>
                 <p class="hero-disclaimer">⚠️ This tool is a configuration helper, not a security audit. No rights or guarantees can be derived from its results.</p>
@@ -199,6 +199,16 @@
                         <label for="defender-general-notes"><strong>📝 Algemene notities</strong></label>
                         <textarea id="defender-general-notes" rows="3" placeholder="Algemene opmerkingen over de Defender for Cloud omgeving..." oninput="updateSectionNote('defender', this.value)"></textarea>
                     </div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('def-access')">
+                        <span class="category-icon">🔑</span>
+                        <h3>Toegang & Rechten</h3>
+                        <span id="cat-count-def-access" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-access" class="category-items expanded"></div>
                 </div>
 
                 <div class="category-group">
@@ -577,7 +587,7 @@
         <header class="app-header">
             <div class="header-left">
                 <span class="header-logo">🛡️</span>
-                <h1>Rapport – Cloud Security Posture Check</h1>
+                <h1>Rapport – Security Posture &amp; Operations Check</h1>
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary btn-small" onclick="closeReport()">← Terug naar check</button>

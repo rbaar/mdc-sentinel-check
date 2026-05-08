@@ -1,4 +1,4 @@
-# 🛡️ Cloud Security Posture Check
+# 🛡️ Security Posture & Operations Check
 
 A free, client-side web application for conducting structured Microsoft Security assessments. Built as an interactive 8-step wizard, it guides security consultants and engineers through a comprehensive review of a customer's cloud and on-premise security posture — covering Defender for Cloud, Microsoft Sentinel, XDR, AMA agents, log sources, and data retention.
 
