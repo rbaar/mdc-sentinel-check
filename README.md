@@ -24,7 +24,9 @@ Open the live app directly: **[Launch Security Posture & Operations Check](https
 2. Open `index.html` in any modern browser to get the language selector, or open a language directly:
    - Dutch: `index-nl.html`
    - English: `index-en.html`
-3. That's it — no build step, no dependencies
+3. That's it — no build step, no dependencies.
+
+Alternatively, you can run it completely locally by opening the HTML files directly from disk in your browser (no web server required).
 
 ```
 ├── index.html       # Language selector landing page
