@@ -187,7 +187,7 @@ const STORAGE_KEY = "security-posture-operations-check-en-assessments";
 let currentAssessmentId = null;
 
 const state = {
-    customer: { name: "", contact: "", date: "", consultant: "" },
+    customer: { name: "", contact: "", date: "", consultant: "", numUsers: "", numOnpremServers: "", numAzureServers: "" },
     checks: {},
     notes: { positive: "", attention: "", critical: "", actions: "" },
     scope: { defender: "", xdr: "", retentie: "", ama: "", logbronnen: "" },
@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    for (const id of ["customerName", "customerContact", "sessionDate", "consultant"]) {
+    for (const id of ["customerName", "customerContact", "sessionDate", "consultant", "numUsers", "numOnpremServers", "numAzureServers"]) {
         const el = document.getElementById(id);
         if (el) el.addEventListener("input", () => debouncedAutoSave());
     }
@@ -273,6 +273,12 @@ function captureState() {
     if (dateEl) state.customer.date = dateEl.value;
     const consultEl = document.getElementById("consultant");
     if (consultEl) state.customer.consultant = consultEl.value.trim();
+    const numUsersEl = document.getElementById("numUsers");
+    if (numUsersEl) state.customer.numUsers = numUsersEl.value;
+    const numOnpremEl = document.getElementById("numOnpremServers");
+    if (numOnpremEl) state.customer.numOnpremServers = numOnpremEl.value;
+    const numAzureEl = document.getElementById("numAzureServers");
+    if (numAzureEl) state.customer.numAzureServers = numAzureEl.value;
 
     for (const field of ["positive", "attention", "critical", "actions"]) {
         const el = document.getElementById(`notes-${field}`);
@@ -339,6 +345,9 @@ function loadAssessment(id) {
     document.getElementById("customerContact").value = state.customer.contact || "";
     document.getElementById("sessionDate").value = state.customer.date || "";
     document.getElementById("consultant").value = state.customer.consultant || "";
+    document.getElementById("numUsers").value = state.customer.numUsers || "";
+    document.getElementById("numOnpremServers").value = state.customer.numOnpremServers || "";
+    document.getElementById("numAzureServers").value = state.customer.numAzureServers || "";
 
     initChecksState();
     for (const [key, val] of Object.entries(data.checks || {})) {
@@ -400,7 +409,7 @@ function deleteAssessment(id, event) {
 function startNewAssessment() {
     currentAssessmentId = null;
 
-    state.customer = { name: "", contact: "", date: "", consultant: "" };
+    state.customer = { name: "", contact: "", date: "", consultant: "", numUsers: "", numOnpremServers: "", numAzureServers: "" };
     state.notes = { positive: "", attention: "", critical: "", actions: "" };
     state.scope = { defender: "", xdr: "", retentie: "", ama: "", logbronnen: "" };
     state.sectionNotes = {};
@@ -581,6 +590,9 @@ function saveCustomerData() {
     state.customer.contact = document.getElementById("customerContact").value.trim();
     state.customer.date = document.getElementById("sessionDate").value;
     state.customer.consultant = document.getElementById("consultant").value.trim();
+    state.customer.numUsers = document.getElementById("numUsers").value;
+    state.customer.numOnpremServers = document.getElementById("numOnpremServers").value;
+    state.customer.numAzureServers = document.getElementById("numAzureServers").value;
 }
 
 // ============================================
@@ -1299,6 +1311,9 @@ function exportExcel() {
     rows.push(["Customer contact", state.customer.contact].map(esc).join(sep));
     rows.push(["Consultant", state.customer.consultant].map(esc).join(sep));
     rows.push(["Date", state.customer.date].map(esc).join(sep));
+    rows.push(["Number of users", state.customer.numUsers || ""].map(esc).join(sep));
+    rows.push(["Number of on-prem servers", state.customer.numOnpremServers || ""].map(esc).join(sep));
+    rows.push(["Number of servers in Azure", state.customer.numAzureServers || ""].map(esc).join(sep));
     rows.push("");
 
     rows.push(["Section", "Category", "Item", "Status", "Assessment", "Follow-up", "Note"].map(esc).join(sep));
@@ -1440,6 +1455,9 @@ function buildReportHTML() {
                 <span><strong>Date:</strong> ${escapeHtml(dateStr)}</span>
                 <span><strong>Customer contact:</strong> ${escapeHtml(state.customer.contact || "–")}</span>
                 <span><strong>Consultant:</strong> ${escapeHtml(state.customer.consultant || "–")}</span>
+                ${state.customer.numUsers ? `<span><strong>Number of users:</strong> ${escapeHtml(state.customer.numUsers)}</span>` : ""}
+                ${state.customer.numOnpremServers ? `<span><strong>On-prem servers:</strong> ${escapeHtml(state.customer.numOnpremServers)}</span>` : ""}
+                ${state.customer.numAzureServers ? `<span><strong>Servers in Azure:</strong> ${escapeHtml(state.customer.numAzureServers)}</span>` : ""}
             </div>
         </div>
         <h3 style="margin-bottom:12px;font-size:18px;">Overview per section</h3>

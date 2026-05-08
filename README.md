@@ -46,7 +46,7 @@ This app is ready to run on GitHub Pages with no configuration needed:
 ## How to Use
 
 ### Step 1 — Customer details
-Fill in the organisation name, customer contact, assessment date, and your name as the consultant. This information appears in the generated report.
+Fill in the organisation name, customer contact, assessment date, and your name as the consultant. Optionally enter the **number of users**, **number of on-premise servers**, and **number of servers in Azure** — these give context to the report but are not required. This information appears in the generated report and CSV export.
 
 ### Step 2 — Overview
 Get an overview of all assessment sections. You can mark entire sections as **Out of Scope** here if they are not relevant for this customer (e.g. a customer without Sentinel).
