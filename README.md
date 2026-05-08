@@ -106,9 +106,3 @@ This tool is a **configuration helper**, not a security audit tool. It is intend
 - **No rights, guarantees, or certifications** of any kind can be derived from the output of this tool
 - Always consult a qualified security professional for formal audits, penetration tests, or compliance assessments
 
----
-
-## License
-
-MIT — free to use, modify, and distribute.
-
