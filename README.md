@@ -4,24 +4,36 @@ A free, client-side web application for conducting structured Microsoft Security
 
 No account, no server, no installation required. Everything runs in your browser.
 
-> **Available in two languages:**
-> - 🇳🇱 **Dutch** — open `index.html`
-> - 🇬🇧 **English** — open `index-en.html`
+> **Available in two languages** via a language selector landing page:
+> - 🇳🇱 **Dutch** — `index-nl.html`
+> - 🇬🇧 **English** — `index-en.html`
 >
 > Both versions are independent: they have separate `localStorage` keys so assessments do not mix between languages.
 
 ---
 
-## Getting Started
+## GitHub Pages
+
+This app is ready to run on GitHub Pages with no configuration needed:
+
+1. Go to your repo → **Settings → Pages**
+2. Under *Branch*, select `main` and folder `/` (root), then click **Save**
+3. GitHub will publish the site at `https://<your-username>.github.io/<repo-name>/`
+4. The landing page (`index.html`) lets users choose their language
+
+---
+
+## Getting Started (local)
 
 1. Download or clone this repository
-2. Open the language version you need in any modern browser (Chrome, Edge, Firefox):
-   - Dutch: `index.html`
+2. Open `index.html` in any modern browser to get the language selector, or open a language directly:
+   - Dutch: `index-nl.html`
    - English: `index-en.html`
 3. That's it — no build step, no dependencies
 
 ```
-├── index.html       # Dutch version — application structure and wizard steps
+├── index.html       # Language selector landing page
+├── index-nl.html    # Dutch version — application structure and wizard steps
 ├── app.js           # Dutch version — state management, wizard logic, report generation
 ├── index-en.html    # English version — application structure and wizard steps
 ├── app-en.js        # English version — state management, wizard logic, report generation

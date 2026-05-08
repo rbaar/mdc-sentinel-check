@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Posture &amp; Operations Check</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Hero Banner -->
+    <div class="hero">
+        <div class="hero-layout">
+            <div class="hero-text">
+                <div class="hero-sun">🛡️</div>
+                <h1>Security Posture &amp; <span class="accent">Operations Check</span></h1>
+                <p class="tagline">Ken je instellingen.</p>
+                <p class="hero-desc">
+                    Weet jij zeker dat je cloudomgeving en on-premise servers de bescherming 
+                    hebben die je verwacht? Loop stap voor stap door alle kritische configuraties 
+                    en valideer je security posture.
+                </p>
+                <div class="hero-badges">
+                    <div class="badge"><span class="badge-icon">🛡️</span> Security Posture</div>
+                    <div class="badge"><span class="badge-icon">🔒</span> Server Security</div>
+                </div>
+                <p class="hero-disclaimer">⚠️ This tool is a configuration helper, not a security audit. No rights or guarantees can be derived from its results.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Stepper Navigation -->
+    <nav class="stepper" id="stepper">
+        <div class="stepper-track">
+            <div class="step active" data-step="1" onclick="goToStep(1)">
+                <div class="step-circle">1</div>
+                <div class="step-label">Klantgegevens</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="2" onclick="goToStep(2)">
+                <div class="step-circle">2</div>
+                <div class="step-label">Overzicht</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="3" onclick="goToStep(3)">
+                <div class="step-circle">3</div>
+                <div class="step-label">Defender for Cloud</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="4" onclick="goToStep(4)">
+                <div class="step-circle">4</div>
+                <div class="step-label">XDR Data</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="5" onclick="goToStep(5)">
+                <div class="step-circle">5</div>
+                <div class="step-label">AMA Coverage</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="6" onclick="goToStep(6)">
+                <div class="step-circle">6</div>
+                <div class="step-label">Retentie</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="7" onclick="goToStep(7)">
+                <div class="step-circle">7</div>
+                <div class="step-label">Sentinel Logbronnen</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="8" onclick="goToStep(8)">
+                <div class="step-circle">8</div>
+                <div class="step-label">Resultaat</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- Step 1: Klantgegevens -->
+        <section id="step-1" class="step-panel active">
+            <div class="step-container narrow">
+                <div class="card">
+                    <h2>📋 Klantgegevens</h2>
+                    <p class="section-desc">Vul de gegevens in van de organisatie waarvoor de security check wordt uitgevoerd.</p>
+                    <div class="form-group">
+                        <label for="customerName">Organisatienaam *</label>
+                        <input type="text" id="customerName" placeholder="Naam van de organisatie" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerContact">Contactpersoon klant</label>
+                        <input type="text" id="customerContact" placeholder="Naam contactpersoon">
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionDate">Datum sessie</label>
+                        <input type="date" id="sessionDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="consultant">Consultant</label>
+                        <input type="text" id="consultant" placeholder="Naam consultant">
+                    </div>
+                </div>
+
+                <!-- Saved Assessments (hidden by default) -->
+                <button class="btn btn-secondary btn-consultant-toggle" onclick="toggleSavedPanel()">🔒 Opgeslagen assessments laden</button>
+                <div class="card saved-panel-hidden" id="saved-assessments-card">
+                    <div class="saved-panel-header">
+                        <h2>📂 Opgeslagen assessments</h2>
+                        <button class="btn btn-small btn-secondary" onclick="toggleSavedPanel()">Verbergen</button>
+                    </div>
+                    <p class="section-desc">Ga verder met een eerder opgeslagen assessment, of start een nieuwe check.</p>
+                    <div id="saved-list" class="saved-list">
+                        <p class="saved-empty">Geen opgeslagen assessments gevonden.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Overzicht -->
+        <section id="step-2" class="step-panel">
+            <div class="step-container">
+                <div class="card">
+                    <h2>📊 Overzicht</h2>
+                    <p class="section-desc">Klik op een onderwerp om direct naar de betreffende check te gaan, of loop stap voor stap door de wizard.</p>
+                </div>
+
+                <div class="overview-grid">
+                    <div class="overview-card" onclick="goToStep(3)">
+                        <div class="scope-toggle" data-section="defender" onclick="toggleScope(event, 'defender')" title="Klik om scope te wijzigen"></div>
+                        <div class="overview-icon">🛡️</div>
+                        <h3>Defender for Cloud</h3>
+                        <p>Beveiligingsdekking, CSPM, workload protection en secure score.</p>
+                        <div class="overview-progress" id="overview-progress-defender">
+                            <div class="overview-bar"><div class="overview-bar-fill" style="width:0%"></div></div>
+                            <span class="overview-count">0/0</span>
+                        </div>
+                    </div>
+                    <div class="overview-card" onclick="goToStep(4)">
+                        <div class="scope-toggle" data-section="xdr" onclick="toggleScope(event, 'xdr')" title="Klik om scope te wijzigen"></div>
+                        <div class="overview-icon">⚔️</div>
+                        <h3>XDR Data</h3>
+                        <p>Defender XDR data connectors, incidenten en signalen in Sentinel.</p>
+                        <div class="overview-progress" id="overview-progress-xdr">
+                            <div class="overview-bar"><div class="overview-bar-fill" style="width:0%"></div></div>
+                            <span class="overview-count">0/0</span>
+                        </div>
+                    </div>
+                    <div class="overview-card" onclick="goToStep(5)">
+                        <div class="scope-toggle" data-section="ama" onclick="toggleScope(event, 'ama')" title="Klik om scope te wijzigen"></div>
+                        <div class="overview-icon">📡</div>
+                        <h3>AMA Coverage</h3>
+                        <p>Azure Monitor Agent dekking op servers, data collection rules.</p>
+                        <div class="overview-progress" id="overview-progress-ama">
+                            <div class="overview-bar"><div class="overview-bar-fill" style="width:0%"></div></div>
+                            <span class="overview-count">0/0</span>
+                        </div>
+                    </div>
+                    <div class="overview-card" onclick="goToStep(6)">
+                        <div class="scope-toggle" data-section="retentie" onclick="toggleScope(event, 'retentie')" title="Klik om scope te wijzigen"></div>
+                        <div class="overview-icon">🕐</div>
+                        <h3>Retentie</h3>
+                        <p>Log retentie-instellingen, opslagduur en compliance-vereisten.</p>
+                        <div class="overview-progress" id="overview-progress-retentie">
+                            <div class="overview-bar"><div class="overview-bar-fill" style="width:0%"></div></div>
+                            <span class="overview-count">0/0</span>
+                        </div>
+                    </div>
+                    <div class="overview-card" onclick="goToStep(7)">
+                        <div class="scope-toggle" data-section="logbronnen" onclick="toggleScope(event, 'logbronnen')" title="Klik om scope te wijzigen"></div>
+                        <div class="overview-icon">🔌</div>
+                        <h3>Sentinel Logbronnen</h3>
+                        <p>Data connectors, log ingestie en zichtbaarheid van bronnen.</p>
+                        <div class="overview-progress" id="overview-progress-logbronnen">
+                            <div class="overview-bar"><div class="overview-bar-fill" style="width:0%"></div></div>
+                            <span class="overview-count">0/0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3: Defender for Cloud -->
+        <section id="step-3" class="step-panel">
+            <div class="step-container">
+                <div class="oos-banner" id="oos-banner-defender" style="display:none">⛔ Dit onderdeel is gemarkeerd als <strong>Out of Scope</strong> in het overzicht</div>
+                <div class="section-intro card">
+                    <h2>🛡️ Defender for Cloud</h2>
+                    <p>Samen bekijken we de huidige beveiligingsdekking in Azure én on-premise servers. We controleren of alle gewenste Defender beschermingsmaatregelen daadwerkelijk actief zijn.</p>
+                    <div class="info-box">
+                        <strong>💡 Tip:</strong> In de praktijk zien we vaak dat omgevingen "beschermd lijken", maar dat essentiële onderdelen ontbreken of anders werken dan gedacht.
+                    </div>
+                    <div class="info-box info-box-resource">
+                        <strong>📊 Coverage overzicht:</strong> Voor een visueel overzicht van de Defender for Cloud coverage kun je de ingebouwde <strong>Coverage workbook</strong> gebruiken in Defender for Cloud (via Workbooks → Coverage), of de community build versie op GitHub:
+                        <a href="https://github.com/rbaar/CloudCoverageWorkbook" target="_blank" rel="noopener noreferrer">github.com/rbaar/CloudCoverageWorkbook</a>
+                    </div>
+                    <div class="general-notes">
+                        <label for="defender-general-notes"><strong>📝 Algemene notities</strong></label>
+                        <textarea id="defender-general-notes" rows="3" placeholder="Algemene opmerkingen over de Defender for Cloud omgeving..." oninput="updateSectionNote('defender', this.value)"></textarea>
+                    </div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('def-access')">
+                        <span class="category-icon">🔑</span>
+                        <h3>Toegang & Rechten</h3>
+                        <span id="cat-count-def-access" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-access" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('def-coverage')">
+                        <span class="category-icon">📊</span>
+                        <h3>Beveiligingsdekking & Plannen</h3>
+                        <span id="cat-count-def-coverage" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-coverage" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('def-cspm')">
+                        <span class="category-icon">🔍</span>
+                        <h3>Cloud Security Posture Management (CSPM)</h3>
+                        <span id="cat-count-def-cspm" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-cspm" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-def-cspm-config">
+                    <div class="category-header" onclick="toggleCategory('def-cspm-config')">
+                        <span class="category-icon">⚙️</span>
+                        <h3>Defender CSPM Configuratie</h3>
+                        <span id="cat-count-def-cspm-config" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-cspm-config" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-def-ai-config">
+                    <div class="category-header" onclick="toggleCategory('def-ai-config')">
+                        <span class="category-icon">🤖</span>
+                        <h3>AI Services Configuratie</h3>
+                        <span id="cat-count-def-ai-config" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-ai-config" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-def-storage-config">
+                    <div class="category-header" onclick="toggleCategory('def-storage-config')">
+                        <span class="category-icon">📦</span>
+                        <h3>Defender for Storage Configuratie</h3>
+                        <span id="cat-count-def-storage-config" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-storage-config" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-def-servers-config">
+                    <div class="category-header" onclick="toggleCategory('def-servers-config')">
+                        <span class="category-icon">🖥️</span>
+                        <h3>Defender for Servers Configuratie</h3>
+                        <span id="cat-count-def-servers-config" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-servers-config" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('def-verdict')">
+                        <span class="category-icon">📋</span>
+                        <h3>Beoordeling</h3>
+                        <span id="cat-count-def-verdict" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-def-verdict" class="category-items expanded"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 4: XDR Data -->
+        <section id="step-4" class="step-panel">
+            <div class="step-container">
+                <div class="oos-banner" id="oos-banner-xdr" style="display:none">⛔ Dit onderdeel is gemarkeerd als <strong>Out of Scope</strong> in het overzicht</div>
+                <div class="section-intro card">
+                    <h2>⚔️ XDR Data</h2>
+                    <p>Controleer of alle Defender XDR signalen correct worden doorgestuurd naar Sentinel en of incidenten goed binnenkomen.</p>
+                    <div class="info-box">
+                        <strong>💡 Tip:</strong> Komen de signalen van Defender for Endpoint, Identity, Office 365 en Cloud Apps netjes binnen in Sentinel?
+                    </div>
+                    <div class="general-notes">
+                        <label for="xdr-general-notes"><strong>📝 Algemene notities</strong></label>
+                        <textarea id="xdr-general-notes" rows="3" placeholder="Algemene opmerkingen over XDR Data..." oninput="updateSectionNote('xdr', this.value)"></textarea>
+                    </div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('xdr-intake')">
+                        <span class="category-icon">⚡</span>
+                        <h3>Setup</h3>
+                        <span id="cat-count-xdr-intake" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-xdr-intake" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-xdr-datalake">
+                    <div class="category-header" onclick="toggleCategory('xdr-datalake')">
+                        <span class="category-icon">🗄️</span>
+                        <h3>Data Lake</h3>
+                        <span id="cat-count-xdr-datalake" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-xdr-datalake" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-xdr-sentinel" style="display:none">
+                    <div class="category-header" onclick="toggleCategory('xdr-sentinel')">
+                        <span class="category-icon">📡</span>
+                        <h3>XDR Data naar Sentinel</h3>
+                        <span id="cat-count-xdr-sentinel" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-xdr-sentinel" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('xdr-verdict')">
+                        <span class="category-icon">📋</span>
+                        <h3>Beoordeling</h3>
+                        <span id="cat-count-xdr-verdict" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-xdr-verdict" class="category-items expanded"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Step 5: AMA Coverage -->
+        <section id="step-5" class="step-panel">
+            <div class="step-container">
+                <div class="oos-banner" id="oos-banner-ama" style="display:none">⛔ Dit onderdeel is gemarkeerd als <strong>Out of Scope</strong> in het overzicht</div>
+                <div class="section-intro card">
+                    <h2>📡 AMA Coverage</h2>
+                    <p>Controleer of de Azure Monitor Agent (AMA) correct is uitgerold op alle servers en of data collection rules goed zijn geconfigureerd.</p>
+                    <div class="info-box">
+                        <strong>💡 Tip:</strong> AMA is de opvolger van de Legacy Log Analytics Agent (MMA). Controleer of de migratie volledig is afgerond.
+                        <br><br>📊 <a href="https://github.com/mathijsvermaat/Defender-AMA-coverage" target="_blank" rel="noopener noreferrer">Coverage Workbook op GitHub</a>
+                    </div>
+                    <div class="general-notes">
+                        <label for="ama-general-notes"><strong>📝 Algemene notities</strong></label>
+                        <textarea id="ama-general-notes" rows="3" placeholder="Algemene opmerkingen over AMA Coverage..." oninput="updateSectionNote('ama', this.value)"></textarea>
+                    </div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('ama-intake')">
+                        <span class="category-icon">💻</span>
+                        <h3>Setup</h3>
+                        <span id="cat-count-ama-intake" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-ama-intake" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('ama-verdict')">
+                        <span class="category-icon">📋</span>
+                        <h3>Beoordeling</h3>
+                        <span id="cat-count-ama-verdict" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-ama-verdict" class="category-items expanded"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 6: Retentie -->
+        <section id="step-6" class="step-panel">
+            <div class="step-container">
+                <div class="oos-banner" id="oos-banner-retentie" style="display:none">⛔ Dit onderdeel is gemarkeerd als <strong>Out of Scope</strong> in het overzicht</div>
+                <div class="section-intro card">
+                    <h2>� Retentie</h2>
+                    <p>Controleer of de retentie-instellingen van logs en tabellen aansluiten bij de organisatie-eisen en compliance-vereisten.</p>
+                    <div class="info-box">
+                        <strong>💡 Tip:</strong> Standaard retentie is 90 dagen. Voor incident-analyse en compliance is dit vaak onvoldoende. Check of kritieke tabellen langere retentie hebben.
+                    </div>
+                    <div class="general-notes">
+                        <label for="retentie-general-notes"><strong>📝 Algemene notities</strong></label>
+                        <textarea id="retentie-general-notes" rows="3" placeholder="Algemene opmerkingen over Retentie..." oninput="updateSectionNote('retentie', this.value)"></textarea>
+                    </div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('ret-intake')">
+                        <span class="category-icon">📋</span>
+                        <h3>Retentie Policy</h3>
+                        <span id="cat-count-ret-intake" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-ret-intake" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-ret-policy" style="display:none">
+                    <div class="category-header" onclick="toggleCategory('ret-policy')">
+                        <span class="category-icon">⏱️</span>
+                        <h3>Retentie Periodes</h3>
+                        <span id="cat-count-ret-policy" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-ret-policy" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('ret-check')">
+                        <span class="category-icon">✅</span>
+                        <h3>Retentie Controle</h3>
+                        <span id="cat-count-ret-check" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-ret-check" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="section-ret-xdr">
+                    <div class="category-header" onclick="toggleCategory('ret-xdr')">
+                        <span class="category-icon">⏱️</span>
+                        <h3>XDR Data Retentie</h3>
+                        <span id="cat-count-ret-xdr" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-ret-xdr" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('ret-verdict')">
+                        <span class="category-icon">📋</span>
+                        <h3>Beoordeling</h3>
+                        <span id="cat-count-ret-verdict" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-ret-verdict" class="category-items expanded"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 7: Sentinel Logbronnen -->
+        <section id="step-7" class="step-panel">
+            <div class="step-container">
+                <div class="oos-banner" id="oos-banner-logbronnen" style="display:none">⛔ Dit onderdeel is gemarkeerd als <strong>Out of Scope</strong> in het overzicht</div>
+                <div class="section-intro card">
+                    <h2>🔌 Sentinel Logbronnen</h2>
+                    <p>Controleer welke logbronnen zijn aangesloten op Sentinel en of alle kritieke bronnen zichtbaar zijn.</p>
+                    <div class="info-box">
+                        <strong>💡 Tip:</strong> Blinde vlekken in logbronnen betekenen blinde vlekken in detectie. Controleer of alle kritieke systemen logs leveren.
+                    </div>
+                    <div class="general-notes">
+                        <label for="logbronnen-general-notes"><strong>📝 Algemene notities</strong></label>
+                        <textarea id="logbronnen-general-notes" rows="3" placeholder="Algemene opmerkingen over Sentinel Logbronnen..." oninput="updateSectionNote('logbronnen', this.value)"></textarea>
+                    </div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('log-tier1')">
+                        <span class="category-icon">⭐</span>
+                        <h3>Tier 1 - Minimaal Aanbevolen Connectors</h3>
+                        <span id="cat-count-log-tier1" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-log-tier1" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="catgroup-log-tier2">
+                    <div class="category-header" onclick="toggleCategory('log-tier2')">
+                        <span class="category-icon">🔷</span>
+                        <h3>Tier 2 - Extended Visibility</h3>
+                        <span id="cat-count-log-tier2" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div class="cat-scope-bar" id="cat-scope-bar-log-tier2">
+                        <button class="cat-scope-btn" id="cat-scope-btn-log-tier2" onclick="toggleCatScope('log-tier2')" title="Markeer als buiten scope">⛔ Buiten scope voor nu</button>
+                        <button class="followup-btn" id="cat-followup-btn-log-tier2" onclick="toggleCatFollowup('log-tier2')" title="Markeer voor vervolgsessie">🔄 Vervolgsessie</button>
+                    </div>
+                    <div id="cat-log-tier2" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group" id="catgroup-log-tier3">
+                    <div class="category-header" onclick="toggleCategory('log-tier3')">
+                        <span class="category-icon">🔶</span>
+                        <h3>Tier 3 - Advanced / Specialised</h3>
+                        <span id="cat-count-log-tier3" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div class="cat-scope-bar" id="cat-scope-bar-log-tier3">
+                        <button class="cat-scope-btn" id="cat-scope-btn-log-tier3" onclick="toggleCatScope('log-tier3')" title="Markeer als buiten scope">⛔ Buiten scope voor nu</button>
+                        <button class="followup-btn" id="cat-followup-btn-log-tier3" onclick="toggleCatFollowup('log-tier3')" title="Markeer voor vervolgsessie">🔄 Vervolgsessie</button>
+                    </div>
+                    <div id="cat-log-tier3" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('log-analytics')">
+                        <span class="category-icon">🎯</span>
+                        <h3>Analytics Rules & Werkboeken</h3>
+                        <span id="cat-count-log-analytics" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-log-analytics" class="category-items expanded"></div>
+                </div>
+
+                <div class="category-group">
+                    <div class="category-header" onclick="toggleCategory('log-verdict')">
+                        <span class="category-icon">📋</span>
+                        <h3>Beoordeling</h3>
+                        <span id="cat-count-log-verdict" class="category-count"></span>
+                        <span class="chevron">▾</span>
+                    </div>
+                    <div id="cat-log-verdict" class="category-items expanded"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 8: Resultaat -->
+        <section id="step-8" class="step-panel">
+            <div class="step-container">
+                <div class="section-intro card">
+                    <h2>📝 Resultaat & Bevindingen</h2>
+                    <p>Documenteer de belangrijkste bevindingen, actiepunten en verbeterpunten uit de sessie.</p>
+                </div>
+
+                <!-- Result Summary -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <h3>📊 Overzicht per onderdeel</h3>
+                    <div id="result-summary-grid" class="result-summary-grid"></div>
+                </div>
+
+                <div class="notes-grid">
+                    <div class="card notes-card">
+                        <h3>🟢 Positieve bevindingen</h3>
+                        <p class="notes-hint">Wat is goed ingericht?</p>
+                        <textarea id="notes-positive" rows="6" placeholder="Bijv: Defender for Servers P2 actief op alle productie-servers..."></textarea>
+                    </div>
+                    <div class="card notes-card">
+                        <h3>🟡 Aandachtspunten</h3>
+                        <p class="notes-hint">Wat verdient aandacht maar is niet kritiek?</p>
+                        <textarea id="notes-attention" rows="6" placeholder="Bijv: Retentie op sommige tabellen slechts 30 dagen..."></textarea>
+                    </div>
+                    <div class="card notes-card">
+                        <h3>🔴 Kritieke bevindingen</h3>
+                        <p class="notes-hint">Wat moet zo snel mogelijk opgepakt worden?</p>
+                        <textarea id="notes-critical" rows="6" placeholder="Bijv: Geen Defender dekking op dev/test omgeving..."></textarea>
+                    </div>
+                    <div class="card notes-card notes-card-full">
+                        <h3>📌 Actiepunten & Vervolgstappen</h3>
+                        <p class="notes-hint">Concrete vervolgacties met prioriteit</p>
+                        <textarea id="notes-actions" rows="8" placeholder="1. [HOOG] ...&#10;2. [MIDDEN] ...&#10;3. [LAAG] ..."></textarea>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 24px;">
+                    <button class="btn btn-primary btn-large" onclick="generateReport()" style="max-width: 400px;">
+                        📄 Genereer Rapport
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Step Navigation Buttons -->
+    <div class="step-nav" id="stepNav">
+        <button class="btn btn-secondary" id="btnPrev" onclick="prevStep()">← Vorige</button>
+        <div class="step-nav-center">
+            <span class="step-indicator" id="stepIndicator">Stap 1 van 8</span>
+            <button class="btn btn-save" id="btnSave" onclick="manualSave()" title="Opslaan">💾 Opslaan</button>
+        </div>
+        <button class="btn btn-primary" id="btnNext" onclick="nextStep()">Volgende →</button>
+    </div>
+
+    <!-- Report Screen (overlay) -->
+    <div id="screen-report" class="screen">
+        <header class="app-header">
+            <div class="header-left">
+                <span class="header-logo">🛡️</span>
+                <h1>Rapport – Security Posture &amp; Operations Check</h1>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary btn-small" onclick="closeReport()">← Terug naar check</button>
+                <button class="btn btn-secondary btn-small" onclick="exportJSON()">📥 JSON</button>
+                <button class="btn btn-secondary btn-small" onclick="exportExcel()">📊 Excel</button>
+                <button class="btn btn-primary btn-small" onclick="printReport()">🖨️ Afdrukken / PDF</button>
+            </div>
+        </header>
+        <div id="report-content" class="report-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
