@@ -16,6 +16,8 @@ No account, no server, no installation required. Everything runs in your browser
 
 This app is ready to run on GitHub Pages with no configuration needed:
 
+Open the live app directly: **[Launch Security Posture & Operations Check](https://rbaar.github.io/mdc-sentinel-check/)**
+
 1. Go to your repo → **Settings → Pages**
 2. Under *Branch*, select `main` and folder `/` (root), then click **Save**
 3. GitHub will publish the site at `https://<your-username>.github.io/<repo-name>/`
