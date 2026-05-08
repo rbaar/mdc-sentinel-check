@@ -1,5 +1,5 @@
 /* ============================================
-   Microsoft Security APK Zomercheck
+   Cloud Security Posture Check
    Application Logic – 8-Step Wizard
    ============================================ */
 
@@ -181,7 +181,7 @@ const sectionStepMap = {
 
 let currentStep = 1;
 const TOTAL_STEPS = 8;
-const STORAGE_KEY = "apk-zomercheck-assessments";
+const STORAGE_KEY = "cloud-security-posture-check-assessments";
 let currentAssessmentId = null;
 
 const state = {
@@ -777,8 +777,8 @@ function createCheckItemHTML(item) {
     }
 
     if (item.type === "toggle") {
-        const toggleState = s?.status === "on" ? "on" : s?.status === "off" ? "off" : "unassessed";
-        const toggleLabel = { on: "On", off: "Off", unassessed: "–" }[toggleState];
+        const toggleState = s?.status === "on" ? "on" : s?.status === "off" ? "off" : s?.status === "na" ? "na" : "unassessed";
+        const toggleLabel = { on: "Aan", off: "Uit", na: "N.v.t.", unassessed: "–" }[toggleState];
         return `
             <div class="check-item toggle-item" id="item-${item.id}" ${statusAttr}>
                 <div class="check-item-content">
@@ -913,11 +913,13 @@ function toggleItemStatus(itemId, isOn) {
 
 function cycleToggleStatus(itemId) {
     const cur = state.checks[itemId];
-    // Cycle: null (unassessed) → off → on → off → on ...
+    // Cycle: null (unassessed) → off → on → na → off → on → na ...
     if (!cur.status) {
         cur.status = "off";
     } else if (cur.status === "off") {
         cur.status = "on";
+    } else if (cur.status === "on") {
+        cur.status = "na";
     } else {
         cur.status = "off";
     }
@@ -927,11 +929,12 @@ function cycleToggleStatus(itemId) {
         else row.removeAttribute("data-status");
         const slider = row.querySelector('.toggle-slider');
         if (slider) {
-            slider.classList.remove('unassessed', 'on', 'off');
+            slider.classList.remove('unassessed', 'on', 'off', 'na');
             slider.classList.add(cur.status);
         }
         const label = row.querySelector(".toggle-label");
-        if (label) label.textContent = cur.status === "on" ? "On" : "Off";
+        const labelMap = { on: "Aan", off: "Uit", na: "N.v.t." };
+        if (label) label.textContent = labelMap[cur.status] || "–";
     }
     updateAllCounts();
     updateConfigVisibility();
@@ -1313,7 +1316,7 @@ function exportJSON() {
     a.href = url;
     const name = (state.customer.name || "assessment").replace(/[^a-zA-Z0-9_-]/g, "_");
     const date = state.customer.date || new Date().toISOString().split("T")[0];
-    a.download = `APK-Zomercheck_${name}_${date}.json`;
+    a.download = `SecurityCheck_${name}_${date}.json`;
     a.click();
     URL.revokeObjectURL(url);
 }
@@ -1340,7 +1343,7 @@ function exportExcel() {
     let rows = [];
 
     // Header info
-    rows.push(["Microsoft Security APK Zomercheck"].map(esc).join(sep));
+    rows.push(["Cloud Security Posture Check"].map(esc).join(sep));
     rows.push(["Organisatie", state.customer.name].map(esc).join(sep));
     rows.push(["Uitgevoerd met", state.customer.contact].map(esc).join(sep));
     rows.push(["Microsoft contactpersoon", state.customer.consultant].map(esc).join(sep));
@@ -1372,11 +1375,19 @@ function exportExcel() {
                     if (!item.showWhen.values.includes(parentStatus)) continue;
                 }
                 const s = state.checks[item.id];
+                const toggleLabels = { on: "Aan", off: "Uit", na: "N.v.t." };
+                const statusLabel = item.type === "toggle"
+                    ? (toggleLabels[s?.status] || "Niet gecontroleerd")
+                    : item.type === "input"
+                        ? (s?.inputValue ? `${s.inputValue} ${item.suffix || ''}`.trim() : "Niet ingevuld")
+                        : item.type === "question"
+                            ? (item.options?.find(o => o.value === s?.status)?.label || "Niet beantwoord")
+                            : (statusLabels[s?.status] || "Niet ingevuld");
                 rows.push([
                     sectionTitles[sectionKey] || sectionKey,
                     reportCategoryTitles[catKey] || catKey,
                     item.title,
-                    statusLabels[s?.status] || "Niet ingevuld",
+                    statusLabel,
                     resultLabels[s?.result] || "",
                     s?.followup ? "Ja" : "",
                     s?.note || ""
@@ -1402,7 +1413,7 @@ function exportExcel() {
     a.href = url;
     const name = (state.customer.name || "assessment").replace(/[^a-zA-Z0-9_-]/g, "_");
     const date = state.customer.date || new Date().toISOString().split("T")[0];
-    a.download = `APK-Zomercheck_${name}_${date}.csv`;
+    a.download = `SecurityCheck_${name}_${date}.csv`;
     a.click();
     URL.revokeObjectURL(url);
 }
@@ -1477,13 +1488,13 @@ function buildReportHTML() {
 
     let html = `<div class="report-page">
         <div class="report-header">
-            <div class="report-banner"><img src="banner.png" alt="Microsoft Security APK Zomercheck"></div>
-            <h1>☀️ Microsoft Security APK Zomercheck</h1>
+
+            <h1>🛡️ Cloud Security Posture Check</h1>
             <h2>${escapeHtml(state.customer.name)}</h2>
             <div class="report-meta">
-                <span><strong>Datum APK Check:</strong> ${escapeHtml(dateStr)}</span>
-                <span><strong>Uitgevoerd met:</strong> ${escapeHtml(state.customer.contact || "–")}</span>
-                <span><strong>Microsoft contactpersoon:</strong> ${escapeHtml(state.customer.consultant || "–")}</span>
+                <span><strong>Datum check:</strong> ${escapeHtml(dateStr)}</span>
+                <span><strong>Contactpersoon klant:</strong> ${escapeHtml(state.customer.contact || "–")}</span>
+                <span><strong>Consultant:</strong> ${escapeHtml(state.customer.consultant || "–")}</span>
             </div>
         </div>
         <h3 style="margin-bottom:12px;font-size:18px;">Overzicht per onderdeel</h3>
@@ -1602,9 +1613,9 @@ function buildReportHTML() {
     }
 
     html += `<div class="report-footer">
-        <p>Dit rapport is gegenereerd tijdens de Microsoft Security APK Zomercheck.</p>
+        <p>Dit rapport is gegenereerd via de Cloud Security Posture Check.</p>
         <p>Geen audit, geen rapportcijfer – maar samen kijken of wat ingeschakeld is, ook écht beschermd.</p>
-        <p style="margin-top:8px">☀️ Veilig de zomer in!</p>
+        <p class="report-disclaimer">⚠️ <strong>Disclaimer:</strong> This report is generated by a configuration helper tool and is intended as a structured conversation aid only. It does not constitute a security audit, penetration test, or compliance assessment. No rights or guarantees of any kind can be derived from its contents. Always consult a qualified security professional for formal assessments.</p>
     </div></div>`;
 
     return html;
@@ -1679,8 +1690,10 @@ function buildReportSectionContent(categories, sectionKey) {
             } else if (item.type === "question") {
                 const opt = item.options?.find(o => o.value === status);
                 label = opt ? opt.label : "Niet beantwoord";
+            } else if (item.type === "toggle") {
+                label = { on: "Aan", off: "Uit", na: "N.v.t.", unchecked: "Niet gecontroleerd" }[status] || "Niet gecontroleerd";
             } else {
-                label = { on: "Op alle subscriptions aan", partial: "Niet op alle subscripties", off: item.type === "toggle" ? "Uit" : "Overal uit", na: "N.v.t.", unchecked: "Niet gecontroleerd" }[status];
+                label = { on: "Op alle subscriptions aan", partial: "Niet op alle subscripties", off: "Overal uit", na: "N.v.t.", unchecked: "Niet gecontroleerd" }[status];
             }
             const resultLabel = s?.result ? { green: "🟢 Zoals verwacht", yellow: "🟡 Niet helemaal zoals verwacht", red: "🔴 Actie vereist" }[s.result] : "";
             const followupLabel = s?.followup ? '<span class="report-followup-badge">🔄 Vervolgsessie</span>' : '';

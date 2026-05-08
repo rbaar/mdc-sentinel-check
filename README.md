@@ -1,59 +1,114 @@
-# ☀️ Microsoft Security APK Zomercheck
+# 🛡️ Cloud Security Posture Check
 
-A client-side web application for conducting structured Microsoft Security assessments. Built as an interactive 8-step wizard, it guides security consultants through a comprehensive review of a customer's cloud and on-premise security posture.
+A free, client-side web application for conducting structured Microsoft Security assessments. Built as an interactive 8-step wizard, it guides security consultants and engineers through a comprehensive review of a customer's cloud and on-premise security posture — covering Defender for Cloud, Microsoft Sentinel, XDR, AMA agents, log sources, and data retention.
 
-## Features
+No account, no server, no installation required. Everything runs in your browser.
 
-- **8-step wizard** — Klantgegevens → Overzicht → Defender for Cloud → XDR Data → AMA Coverage → Retentie → Sentinel Logbronnen → Resultaat
-- **100+ checklist items** covering Defender for Cloud plans, XDR connectors, AMA agents, data retention, and Sentinel log sources
-- **Status tracking** per item (left to right): N.v.t. → Uit → Niet consistent → Aan
-- **Result scoring** per item:
-  - 🟢 Configuratie is zoals verwacht
-  - 🟡 Configuratie is niet helemaal zoals verwacht
-  - 🔴 Configuratie niet zoals verwacht, actie vereist
-- **Follow-up marking** (🔄) to flag items for a next session
-- **Scope management** — mark entire sections as "Out of Scope"
-- **Conditional config sections** — configuration checklists (CSPM, AI Services, Storage, Servers) only appear when the parent plan is enabled
-- **Notes** at item, section, and global level (positive findings, attention points, critical findings, action items)
-- **Auto-save** to localStorage with debouncing (300ms)
-- **Multiple assessments** — save, load, and manage assessments per customer
-- **Report generation** with banner image, summary table, legend, per-section details, follow-up overview, and findings
-- **Print / PDF** via browser print dialog
-- **Export** — JSON for archiving, CSV (Excel-compatible with UTF-8 BOM and semicolon delimiter)
-- **Accessibility** — aria-labels on status buttons
-- **Data loss prevention** — browser warns before closing tab with active assessment
+---
 
 ## Getting Started
 
-No build step required. Open `index.html` in a browser.
+1. Download or clone this repository
+2. Open `index.html` in any modern browser (Chrome, Edge, Firefox)
+3. That's it — no build step, no dependencies
 
 ```
 ├── index.html    # Application structure and wizard steps
 ├── app.js        # State management, wizard logic, report generation
 ├── styles.css    # Styling and responsive layout
-├── banner.png    # Hero banner image (used in app and report)
 └── README.md
 ```
 
-## Usage
+---
 
-1. Enter customer details in step 1
-2. Review the overview and optionally mark sections as out-of-scope
-3. Walk through each security domain (steps 3–7), setting status and notes per item
-4. Review results in step 8, add findings and action items
-5. Generate the report, then print, export as JSON, or export as Excel (CSV)
+## How to Use
 
-## Data Storage
+### Step 1 — Customer details
+Fill in the organisation name, customer contact, assessment date, and your name as the consultant. This information appears in the generated report.
 
-All data is stored in the browser's `localStorage`. No server or database required. Data does not leave the browser.
+### Step 2 — Overview
+Get an overview of all assessment sections. You can mark entire sections as **Out of Scope** here if they are not relevant for this customer (e.g. a customer without Sentinel).
+
+### Steps 3–7 — Assessment domains
+Walk through each security domain:
+
+| Step | Domain |
+|------|--------|
+| 3 | Defender for Cloud |
+| 4 | XDR Data |
+| 5 | AMA Coverage |
+| 6 | Retentie |
+| 7 | Sentinel Logbronnen |
+
+For each item you can:
+
+- **Set the status** — use the coloured buttons to indicate whether a setting is on, off, partially configured, or not applicable (N.v.t.)
+- **Set a result** — click the result dot to mark the finding as 🟢 as expected, 🟡 needs attention, or 🔴 action required
+- **Add a note** — click "+ Notitie toevoegen" to attach a free-text note to any item
+- **Flag for follow-up** — click 🔄 to mark an item for a next session
+
+For toggle-style settings (Defender CSPM extensions, AI Services, Storage, Servers), click the toggle to cycle through **Aan / Uit / N.v.t.**
+
+Some sections only appear when a parent setting is enabled (e.g. CSPM configuration details only appear when Defender CSPM is turned on).
+
+### Step 8 — Results
+Review the summary of all sections with their conclusions. Add overall findings in four categories:
+- Positieve bevindingen
+- Aandachtspunten
+- Kritieke bevindingen
+- Actiepunten
+
+Then click **Rapport genereren** to open the full report.
+
+---
+
+## Report & Export
+
+From the report screen you can:
+
+- **Print / PDF** — use the browser print dialog (works well with "Save as PDF")
+- **Export JSON** — save the full assessment for archiving or loading later
+- **Export Excel** — download a CSV file (semicolon-delimited, UTF-8 with BOM for Excel compatibility)
+
+---
+
+## Saving & Loading Assessments
+
+All data is stored in your browser's `localStorage`. No data leaves your device.
+
+- Assessments are **auto-saved** as you work (300ms debounce)
+- To load a previous assessment, click **Opgeslagen assessments laden** on the first screen
+- To export for backup or transfer to another device, use **Export JSON** and re-import via the load panel
 
 To clear all saved assessments, run in the browser console:
 
 ```js
-localStorage.removeItem("apk-zomercheck-assessments");
+localStorage.removeItem("cloud-security-posture-check-assessments");
 location.reload();
 ```
 
+---
+
+## Requirements
+
+- Any modern browser (Chrome 90+, Edge 90+, Firefox 88+)
+- No internet connection required after the page loads (fonts load from Google Fonts on first open)
+- No server, no backend, no login
+
+---
+
+## Disclaimer
+
+This tool is a **configuration helper**, not a security audit tool. It is intended as a structured conversation aid to help consultants and engineers review security settings together with a customer.
+
+- Results reflect what was observed and discussed during the session — they are **not** the output of automated scanning or testing
+- The tool does **not** connect to any environment, API, or external system
+- **No rights, guarantees, or certifications** of any kind can be derived from the output of this tool
+- Always consult a qualified security professional for formal audits, penetration tests, or compliance assessments
+
+---
+
 ## License
 
-Internal use only — Microsoft Security.
+MIT — free to use, modify, and distribute.
+

@@ -84,6 +84,7 @@ body {
 .hero .accent { color: var(--accent); font-size: 52px; display: block; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 .tagline { font-size: 22px; font-weight: 300; opacity: 0.9; margin-bottom: 20px; }
 .hero-desc { max-width: 700px; font-size: 16px; opacity: 0.85; line-height: 1.7; margin-bottom: 30px; }
+.hero-disclaimer { max-width: 700px; font-size: 12px; opacity: 0.6; line-height: 1.5; margin-top: 16px; font-style: italic; }
 .hero-badges { display: flex; gap: 20px; flex-wrap: wrap; }
 .badge { background: rgba(255,255,255,0.15); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 50px; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.2); }
 .badge-icon { font-size: 20px; }
@@ -386,6 +387,12 @@ body {
     border-radius: 0 var(--radius) var(--radius) 0;
     font-size: 14px; color: #6d5700;
 }
+.info-box-resource {
+    background: var(--primary-light); border-left-color: var(--primary);
+    color: var(--neutral-dark);
+}
+.info-box-resource a { color: var(--primary); font-weight: 600; }
+.info-box-resource a:hover { color: var(--primary-dark); }
 
 .general-notes {
     margin-top: 16px; display: flex; flex-direction: column; gap: 6px;
@@ -580,11 +587,14 @@ body {
 .toggle-slider.on::after { transform: translateX(20px); }
 .toggle-slider.unassessed { background: #e0e0e0; opacity: 0.35; }
 .toggle-slider.unassessed::after { background: #d0d0d0; box-shadow: none; }
+.toggle-slider.na { background: var(--neutral-secondary); }
+.toggle-slider.na::after { transform: translateX(10px); opacity: 0.6; }
 .toggle-label {
-    font-size: 13px; font-weight: 600; min-width: 24px;
+    font-size: 13px; font-weight: 600; min-width: 36px;
     color: var(--neutral-secondary);
 }
 .toggle-slider.on ~ .toggle-label { color: var(--success); }
+.toggle-slider.na ~ .toggle-label { color: var(--neutral-secondary); }
 
 /* Question buttons */
 .question-buttons {
@@ -827,6 +837,7 @@ body {
 .report-notes h4 { margin-bottom: 8px; font-size: 15px; }
 
 .report-footer { text-align: center; padding-top: 24px; border-top: 1px solid var(--neutral-border); color: var(--neutral-secondary); font-size: 13px; }
+.report-disclaimer { margin-top: 12px; font-size: 11px; opacity: 0.7; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto; }
 
 /* ============================================
    Print
