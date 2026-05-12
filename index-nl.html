@@ -467,9 +467,9 @@
                 <div class="oos-banner" id="oos-banner-logbronnen" style="display:none">⛔ Dit onderdeel is gemarkeerd als <strong>Out of Scope</strong> in het overzicht</div>
                 <div class="section-intro card">
                     <h2>🔌 Sentinel Logbronnen</h2>
-                    <p>Controleer welke logbronnen zijn aangesloten op Sentinel en of alle kritieke bronnen zichtbaar zijn.</p>
+                    <p>Beoordeel de Sentinel connector-dekking aan de hand van het tiered maturity model en controleer of de kritieke bronnen voor deze klant zichtbaar zijn.</p>
                     <div class="info-box">
-                        <strong>💡 Tip:</strong> Blinde vlekken in logbronnen betekenen blinde vlekken in detectie. Controleer of alle kritieke systemen logs leveren.
+                        <strong>💡 Tip:</strong> Begin met Tier 1 en breid daarna uit naar Tier 2 en Tier 3 op basis van risico, gebruikte platforms en detectiedoelen.
                     </div>
                     <div class="general-notes">
                         <label for="logbronnen-general-notes"><strong>📝 Algemene notities</strong></label>
@@ -480,7 +480,7 @@
                 <div class="category-group">
                     <div class="category-header" onclick="toggleCategory('log-tier1')">
                         <span class="category-icon">⭐</span>
-                        <h3>Tier 1 - Minimaal Aanbevolen Connectors</h3>
+                        <h3>Tier 1 - Fundamenteel / Essentiële connectors</h3>
                         <span id="cat-count-log-tier1" class="category-count"></span>
                         <span class="chevron">▾</span>
                     </div>
@@ -490,7 +490,7 @@
                 <div class="category-group" id="catgroup-log-tier2">
                     <div class="category-header" onclick="toggleCategory('log-tier2')">
                         <span class="category-icon">🔷</span>
-                        <h3>Tier 2 - Extended Visibility</h3>
+                        <h3>Tier 2 - Uitgebreide zichtbaarheid</h3>
                         <span id="cat-count-log-tier2" class="category-count"></span>
                         <span class="chevron">▾</span>
                     </div>
@@ -504,7 +504,7 @@
                 <div class="category-group" id="catgroup-log-tier3">
                     <div class="category-header" onclick="toggleCategory('log-tier3')">
                         <span class="category-icon">🔶</span>
-                        <h3>Tier 3 - Advanced / Specialised</h3>
+                        <h3>Tier 3 - Geavanceerd / Gespecialiseerd</h3>
                         <span id="cat-count-log-tier3" class="category-count"></span>
                         <span class="chevron">▾</span>
                     </div>

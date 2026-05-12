@@ -1,6 +1,6 @@
 # 🛡️ Security Posture & Operations Check
 
-A free, client-side web application for conducting structured Microsoft Security assessments. Built as an interactive 8-step wizard, it guides security consultants and engineers through a comprehensive review of a customer's cloud and on-premise security posture — covering Defender for Cloud, Microsoft Sentinel, XDR, AMA agents, log sources, and data retention.
+A free, client-side web application for conducting structured Microsoft Security assessments. Built as an interactive 8-step wizard, it guides security consultants and engineers through a comprehensive review of a customer's cloud and on-premise security posture — covering Defender for Cloud, Microsoft Sentinel, XDR, AMA agents, tiered Sentinel connector coverage, and data retention.
 
 No account, no server, no installation required. Everything runs in your browser.
 
@@ -56,8 +56,8 @@ Walk through each security domain:
 | 3 | Defender for Cloud |
 | 4 | XDR Data |
 | 5 | AMA Coverage |
-| 6 | Retentie |
-| 7 | Sentinel Logbronnen |
+| 6 | Retention |
+| 7 | Sentinel Log Sources |
 
 For each item you can:
 
@@ -69,6 +69,14 @@ For each item you can:
 For toggle-style settings (Defender CSPM extensions, AI Services, Storage, Servers), click the toggle to cycle through **Aan / Uit / N.v.t.**
 
 Some sections only appear when a parent setting is enabled (e.g. CSPM configuration details only appear when Defender CSPM is turned on).
+
+The Sentinel Log Sources step follows a tiered maturity model based on current connector guidance:
+
+- **Tier 1 - Foundational / Essential connectors** such as Microsoft Defender XDR, Entra ID, Office 365, Azure Activity Logs, Windows Security Events, Syslog, and Sentinel Health
+- **Tier 2 - Extended visibility** for cloud posture, governance, threat intelligence, Intune, multi-cloud, identity extensions, and network visibility
+- **Tier 3 - Advanced / Specialised** for custom applications, DevOps, AKS, storage, OT/IoT, SAP, databases, and other specialised integrations
+
+Recent connector wording in the checklist has been aligned with the latest Sentinel Maturity updates, including the Defender for Servers P2 ingestion benefit wording for Windows Security Events, the Purview split, updated Intune scope, and the current GitHub Enterprise table naming.
 
 ### Step 8 — Results
 Review the summary of all sections with their conclusions. Add overall findings in four categories:
